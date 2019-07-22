@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class ExtraPointText : MonoBehaviour
 {
-    private Text extraPointText;
+    public Text pointText;
 
     private void Start()
     {
-        extraPointText = GetComponent<Text>();
+        pointText = GetComponent<Text>();
     }
 
     public void ShowExtraPointText(int point)
@@ -17,11 +17,11 @@ public class ExtraPointText : MonoBehaviour
         string symbol ="";
         if (point > 0)
             symbol = "+";
-        extraPointText.text = symbol + point.ToString();
+        pointText.text = symbol + point.ToString();
     }
 
     public void ClearExtraPointText()
     {
-        extraPointText.text = "";
+        pointText.text = "";
     }
 }

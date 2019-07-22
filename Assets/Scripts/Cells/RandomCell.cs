@@ -30,13 +30,15 @@ public class RandomCell : MonoBehaviour
     }
 
     //外部接口，获取随机效果
-    public void GetRandom(Player player)
+    public string GetRandom(Player player)
     {
+        string result;
         int random = Random.Range(1, 100);
         //获得点数
         if(random <= pointProbability)
         {
-            int randomPoint = Utility.GetRandomPoint(pointList,weightList);
+            int randomPoint = Utility.GetRandomValue(pointList,weightList);
+            result = randomPoint.ToString();
             player.extraPoint = randomPoint;
             player.UpdateExtraPoint(randomPoint);
         }
@@ -45,7 +47,9 @@ public class RandomCell : MonoBehaviour
         {
             int index = Random.Range(0, propList.Count);
             player.UpdatePropAmount(propList[index], 1);
+            result = propList[index];
         }
+        return result;
     }
 
 }

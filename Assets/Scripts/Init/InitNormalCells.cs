@@ -11,14 +11,17 @@ public class InitNormalCells : InitCells
     public static List<NormalCell> cells;                                               //保存所有点数格引用
     public List<int> extraPoints;                 //保存额外点数
 
-    //记录点数图像对应的点数
-    public static Dictionary<GameObject, int> pointSprites;
+    //记录生成的点数图像对应的点数(含有多张一样点数的图片)
+    public static Dictionary<GameObject, int> pointSpritesDic;
+    //记录点数图像对应的点数（不含重复点数）
+    public static Dictionary<int, GameObject> pointSpriteDic;
 
 
     private void Awake()
     {
         cells = new List<NormalCell>(GetComponentsInChildren<NormalCell>());
-        pointSprites = new Dictionary<GameObject, int>();
+        pointSpritesDic = new Dictionary<GameObject, int>();
+        pointSpriteDic = new Dictionary<int, GameObject>();
         InitCellsPoint();
     }
 
@@ -38,13 +41,19 @@ public class InitNormalCells : InitCells
 
             //根据点数分配对应的sprite
             int sprite_index = 0;
-            if (tempCellList[cell_index].extraPoint < 0)
-                sprite_index = tempCellList[cell_index].extraPoint + 6;
+            int extraPoint = tempCellList[cell_index].extraPoint;
+            if (extraPoint < 0)
+                sprite_index = extraPoint + 6;
             else
-                sprite_index = tempCellList[cell_index].extraPoint + 5;
+                sprite_index = extraPoint + 5;
+
             //动态生成sprite
-            GameObject pointSpirte =  InstantiateSprite(tempCellList[cell_index].gameObject, sprites[sprite_index],Vector3.one);
-            pointSprites.Add(pointSpirte, tempCellList[cell_index].extraPoint);
+            GameObject cellObj = tempCellList[cell_index].gameObject;
+            GameObject pointSpirte =  InstantiateSprite(cellObj, sprites[sprite_index],Vector3.one);
+            pointSpritesDic.Add(pointSpirte, extraPoint);
+
+            if (!pointSpriteDic.ContainsKey(extraPoint))
+                pointSpriteDic.Add(extraPoint, pointSpirte);
 
             tempCellList.RemoveAt(cell_index);
         }

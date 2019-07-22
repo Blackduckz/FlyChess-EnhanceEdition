@@ -144,8 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa651e518bb5614a90443536c505684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointProbability: 40
-  propProbability: 60
+  pointProbability: 30
+  propProbability: 70
   weightList: 0500000005000000050000001400000014000000050000000400000004000000040000000c0000000c00000004000000
 --- !u!1001 &2117886516941426847
 PrefabInstance:

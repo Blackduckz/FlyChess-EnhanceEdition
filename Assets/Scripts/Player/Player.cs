@@ -14,10 +14,9 @@ public class Player : MonoBehaviour,IComparable<Player>
     public GameObject final;            //玩家对应终点
     public Text playerText;                 //玩家名称
     public ExtraPointText extraPointText;           //额外点数Text
-
-    public int turn;
     public int curCellIndex;                               //所在格子ID
 
+    public int turn;                //玩家顺序
     [HideInInspector]public bool needRotate;         //标识是否需要旋转
     [HideInInspector] public bool isClockWide;         //标识旋转方向是否为顺时针
     [HideInInspector] public bool isReverse;            //标识是否倒退移动
@@ -51,7 +50,7 @@ public class Player : MonoBehaviour,IComparable<Player>
     private Animator animator;
 
     //初始数据，供返回起点使用
-    private int originIndex;
+    [HideInInspector]public int originIndex;
     private int originMoveDir;
     private Vector3 originPosition;
     private Quaternion originRotation;
@@ -104,7 +103,9 @@ public class Player : MonoBehaviour,IComparable<Player>
         backToFinal = false;            
         passFinal = false;
 
+        //curCellIndex = 0;
         extraPoint = 0;
+        distanceFromFinal = 53;
         moveTime = 0.1f;
         rotateTime = 0.01f;
 }
@@ -209,12 +210,15 @@ public class Player : MonoBehaviour,IComparable<Player>
 
                 if (normalCell != null)
                     UpdateExtraPoint(normalCell.extraPoint);
+                StartCoroutine(GetCellEffect(InitNormalCells.pointSpriteDic[normalCell.extraPoint]));
             }
             //停留在道具格，获取道具
             else if (Utility.IsTypeOf<Cell>(cell))
             {
                 extraPointText.ClearExtraPointText();
                 UpdatePropAmount(cellTag, 1);
+                StartCoroutine(GetCellEffect(InitPropsCells.propSpriteDic[cell.tag]));
+
             }
             //停留在三角格
             else if(Utility.IsTypeOf<TriCell>(cell))
@@ -229,30 +233,42 @@ public class Player : MonoBehaviour,IComparable<Player>
                 //执行三角格上对应的脚本
                 DoTriCellFunc(currentCell);
             }
-
-            if (currentCell.transform.childCount >0)
-                StartCoroutine(GetCellEffect(currentCell.transform.GetChild(0).gameObject));
         }
     }
 
     //执行三角格上对应的脚本
     private void DoTriCellFunc(GameObject triCell)
     {
+        string instantiateItem="";
         if (triCell.tag == "RandomCell")
         {
             RandomCell randomCell = triCell.GetComponent<RandomCell>();
-            randomCell.GetRandom(this);
+            instantiateItem = randomCell.GetRandom(this);
+
+            //获得了点数
+            int result;
+            if (int.TryParse(instantiateItem, out result))
+                StartCoroutine(GetCellEffect(InitNormalCells.pointSpriteDic[result])); 
+            //获得了普通道具
+            else
+                StartCoroutine(GetCellEffect(InitPropsCells.propSpriteDic[instantiateItem]));
         }
         else if (triCell.tag == "PropCell")
         {
             PropCell proCell = triCell.GetComponent<PropCell>();
-            proCell.GetProp(this);
+            instantiateItem = proCell.GetProp(this);
+            StartCoroutine(GetCellEffect(PropCell.propSpriteDic[instantiateItem]));
         }
         else if (triCell.tag == "EventCell")
         {
             EventCell eventCell = triCell.GetComponent<EventCell>();
             eventCell.ExecuteEvent();
+
+            AudioSource audioSource = triCell.GetComponent<AudioSource>();
+            if(audioSource != null)
+                audioSource.Play(); 
         }
+        
     }
 
     //返回玩家当前所在格子
@@ -370,13 +386,23 @@ public class Player : MonoBehaviour,IComparable<Player>
         animator.SetTrigger("StartProtal");
         yield return new WaitForSeconds(1f);
 
-        //获取除终点外的随机格子
-        Dictionary<int, GameObject> cells = GameManager.instant.cellDic;
+        //获取除终点外,以玩家终点开始的26格的随机格子
+        Dictionary<int, GameObject> allCells = GameManager.instant.cellDic;
+        List<GameObject> cells = new List<GameObject>() ;
+        int finalIndex = final.GetComponent<FinalCell>().index;
+
+        for (int i = 0; i < 26; i++) 
+        {
+            finalIndex = Utility.GetVaildIndex(finalIndex + 1, allCells.Count);
+            cells.Add(allCells[finalIndex]);
+        }
+
         GameObject cell;
        while (true)
         {
-            int random = UnityEngine.Random.Range(1, cells.Count + 1);
-            //int random = 48;
+            //int random = 2;
+            int random = UnityEngine.Random.Range(0, cells.Count);
+
             cell = cells[random];
             FinalCell finalCell = cells[random].GetComponent<FinalCell>();
             if (finalCell == null || finalCell.playerPlane != gameObject)
@@ -462,25 +488,36 @@ public class Player : MonoBehaviour,IComparable<Player>
     //回到起点，供炸弹功能使用
     public void ReturnToOrigin()
     {
-        //transform.position = originPosition;
+        //如果被炸回起点前反向，取消恢复朝向事件
+        if (isTurnAround)
+            GameManager.instant.disactiveEffect -= GameManager.instant.disactiveEffect;
+
+        //返回起点，并调整朝向
         StartCoroutine(MoveThePlane(originPosition));
         transform.rotation = originRotation;
         moveDir = originMoveDir;
-        curCellIndex = originIndex;
+        curCellIndex = 0;
 
+        //清空标志位
         needRotate = false;
         passFinal = false;
 
+        //清空状态
+        curCellIndex = originIndex;
         extraPoint = 0;
         extraPointText.ClearExtraPointText();
     }
 
 
     //获取格子内容，并飞入对应的UI框中
-    private IEnumerator GetCellEffect(GameObject cellContent)
+    public IEnumerator GetCellEffect(GameObject cellContent)
     {
-        //将生成的格子内容转换为屏幕坐标
         GameObject content =  Instantiate(cellContent, transform.position, Quaternion.identity);
+        AudioSource audioSource = content.GetComponent<AudioSource>();
+        if (audioSource != null)
+            audioSource.Play();
+
+        //将生成的格子内容转换为屏幕坐标
         Transform contentTrsf = content.transform;
         Vector3 contentScreenPos = Camera.main.WorldToScreenPoint(contentTrsf.position);
 
@@ -491,7 +528,7 @@ public class Player : MonoBehaviour,IComparable<Player>
         while (sqrRemainingDistance > float.Epsilon)
         {
             //使用MoveTowards进行平滑移动
-            Vector3 newPosition = Vector3.MoveTowards(contentScreenPos, targetPos,10f );
+            Vector3 newPosition = Vector3.MoveTowards(contentScreenPos, targetPos,8f );
             contentScreenPos = newPosition;
             //修改生成的格子内容世界坐标，从屏幕坐标转换
             contentTrsf.position = Camera.main.ScreenToWorldPoint(newPosition);
@@ -511,12 +548,28 @@ public class Player : MonoBehaviour,IComparable<Player>
     }
 
 
-    //改变按钮可互动状态方法
-    public void ChangeButtonState(bool state)
+    //改变所有道具按钮可互动状态方法
+    public void ChangeAllButtonState(bool state)
     {
         Button[] buttons = player_PropPanel.GetComponentsInChildren<Button>();
         for (int i = 0; i < buttons.Length; i++)
             buttons[i].interactable = state;
+    }
+
+    //改变某个道具按钮可互动状态方法
+    public void ChangeButtonState(string name,bool state)
+    {
+        PropsPanel propsPanel = player_PropPanel.GetComponent<PropsPanel>();
+        Dictionary<string, Text> propsDic = propsPanel.propsDic;
+        Button propBtn = propsDic[name].GetComponentInParent<Button>();
+        propBtn.interactable = false;
+    }
+
+    //使用道具方法
+    public void UseProp(string propName)
+    {
+        UpdatePropAmount(propName, -1);
+        ChangeButtonState(propName, false);
     }
 
     //重置可清除状态位方法

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using BehaviorDesigner.Runtime;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,8 +10,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instant { get; set; }         //单例
     public GameObject[] players;           //玩家引用
-    //存储所有格子的词典
-    [HideInInspector] public Dictionary<int, GameObject> cellDic;
+    [HideInInspector]public Player[] playersScript;           //player脚本数组
+
+    [HideInInspector] public Dictionary<int, GameObject> cellDic;           //存储所有格子的词典
+    [HideInInspector] List<Player> playerRank;                  //存储玩家排名的列表
     [HideInInspector] public int playerTurn;        //玩家顺序
     [HideInInspector] public int morePoint;        //事件额外点数
     [HideInInspector] public int round;         //轮数（每投一次骰子为1轮，1回合4轮）
@@ -25,10 +28,15 @@ public class GameManager : MonoBehaviour
     public delegate void DisactiveEffect();
     public DisactiveEffect disactiveEffect;
 
+    //委托，用于每轮结束后清空一些效果
+    public delegate void ClearAfterRound();
+    public ClearAfterRound clearAfterRound;
+
     //组件
     public Button diceButton;
     public ExtraPointText extraPointText;
     public CurRoundPlayer CurRoundPlayer;
+    public FirstPlayerText firstPlayerText;
     public Text winnerText;
     private Player player;
     private Text dicePointText;
@@ -40,7 +48,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, Rigidbody2D> playerRd2ds;           //所以玩家的Rigidbody2D组件
     private bool _GameOver;             //标识游戏结束
 
-    //public int random;              //调试用值，用于控制骰子点数
+    public int random;              //调试用值，用于控制骰子点数
 
 
     private void Awake()
@@ -82,9 +90,11 @@ public class GameManager : MonoBehaviour
     private void Init()
     {
         _GameOver = false;
+        playersScript = new Player[4];
         cellDic = new Dictionary<int, GameObject>();
         playerTrsfs = new Dictionary<int, Transform>();
         playerRd2ds = new Dictionary<int, Rigidbody2D>();
+
 
         playerTurn = 0;
         morePoint = 0;
@@ -93,7 +103,11 @@ public class GameManager : MonoBehaviour
         dicePoint = 0;
         pause = false;
 
-        player = players[playerTurn].GetComponent<Player>();
+        for (int i = 0; i < players.Length; i++)
+            playersScript[i] = players[i].GetComponent<Player>();
+
+        player = playersScript[0];
+        //player = players[playerTurn].GetComponent<Player>();
         CurRoundPlayer.UpdateText(player.playerText.text);
     }
 
@@ -122,7 +136,7 @@ public class GameManager : MonoBehaviour
     private int RollTheDice()
     {
         diceButton.interactable = false;
-        int random = Random.Range(1, 6);
+        //int random = Random.Range(1, 6);
         dicePointText.text = random.ToString();
         return random;
     }
@@ -158,16 +172,27 @@ public class GameManager : MonoBehaviour
         disactiveEffect?.Invoke();
         dicePoint = 0;
 
+        //更新排名第一的玩家
+        Player firstPlayer = GetFirstPlayer();
+        firstPlayerText.UpdateFirstPlayerText(firstPlayer.playerText.text);
+
         //清空当前玩家身上可清除的状态位
         player.ResetFlag();
-        player.ChangeButtonState(false);
+        player.ChangeAllButtonState(false);
+        clearAfterRound?.Invoke();
 
         //切换到下一位玩家
         playerTurn = (playerTurn + 1) % 4;
-        player = players[playerTurn].GetComponent<Player>();
-        player.ChangeButtonState(true);
+        player = playersScript[playerTurn];
+
+        //player = players[playerTurn].GetComponent<Player>();
+        player.ChangeAllButtonState(true);
         diceButton.interactable = true;
         extraPointText.ClearExtraPointText();
+
+        BehaviorTree behaviorTree = player.GetComponent<BehaviorTree>();
+        if (behaviorTree != null)
+            behaviorTree.EnableBehavior();
     }
 
     //获取事件的额外点数
@@ -270,7 +295,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             Player player = players[i].GetComponent<Player>();
-            player.ChangeButtonState(false);
+            player.ChangeAllButtonState(false);
         }
     }
 
@@ -289,7 +314,8 @@ public class GameManager : MonoBehaviour
     //返回以当前玩家为起始的Player，参数为偏移量
     public Player GetPlayer(int offset = 0)
     {
-        Player player = players[(playerTurn + offset) % 4].GetComponent<Player>();
+        //Player player = players[(playerTurn + offset) % 4].GetComponent<Player>();
+        Player player = playersScript[(playerTurn + offset) % 4];
         return player;
     }
 
@@ -299,6 +325,34 @@ public class GameManager : MonoBehaviour
         int curPlayerTurn = playerTurn + 1;
         int gap = playerTurn - curPlayerTurn;
         return round + gap;
+    }
 
+    public Player GetFirstPlayer()
+    {
+        //对玩家数组进行升序排序
+        playerRank = new List<Player>();
+        foreach (GameObject item in players)
+        {
+            //如果玩家在起点，不计入排序
+            Player player = item.GetComponent<Player>();
+            if (player.curCellIndex == 0)
+                continue;
+
+            playerRank.Add(player);
+        }
+
+        playerRank.Sort((x, y) => x.CompareTo(y));
+        return playerRank[0];
+    }
+
+    //查找是否有距离终点小于27且领先自身的玩家
+    public bool HasPlayerCloseToFinal()
+    {
+        foreach (Player temPlayer in playersScript)
+            if (temPlayer != player && temPlayer.distanceFromFinal < 27
+                && temPlayer.distanceFromFinal < player.distanceFromFinal)
+                return true;
+
+        return false;
     }
 }

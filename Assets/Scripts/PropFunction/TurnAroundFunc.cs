@@ -21,14 +21,15 @@ public class TurnAroundFunc : MonoBehaviour
     public void TurnAroundTheFirstPlayer()
     {
         Player curPlayer = GameManager.instant.GetPlayer();
-        if(curPlayer.props[gameObject.tag] > 0)
+        firstPlayer = GameManager.instant.GetFirstPlayer();
+
+        //道具数量大于0且第一名未被转向
+        if (curPlayer.props[gameObject.tag] > 0)
         {
             //游戏开局时不能使用
-            firstPlayer = GameManager.instant.GetPlayer();
             if (firstPlayer.turn == GameManager.instant.round + 1)
                 return;
 
-            firstPlayer = FindFirstPlayer();
             //如果当前第一名已经被转向，不能再次将其转向
             if (firstPlayer.isTurnAround)
                 return;
@@ -55,28 +56,11 @@ public class TurnAroundFunc : MonoBehaviour
             GameManager.instant.disactiveEffect += ResumeOrientation;
 
             //关闭道具互动状态，更新数量
-
-            curPlayer.ChangeButtonState(false);
-            curPlayer.UpdatePropAmount("TurnAround", -1);
-            curPlayer.skipRound = true;
+            curPlayer.UseProp(gameObject.tag);
+            //curPlayer.skipRound = true;
         }
-        
     }
 
-    //找到排名第一的玩家
-    private Player FindFirstPlayer()
-    {
-        //对玩家数组进行升序排序
-        GameObject[] players = GameManager.instant.players;
-        foreach (GameObject item in players)
-        {
-            Player player = item.GetComponent<Player>();
-            playerRank.Add(player);
-        }
-
-        playerRank.Sort((x, y) => x.CompareTo(y));
-        return playerRank[0];
-    }
 
     //恢复朝向
     public void ResumeOrientation()

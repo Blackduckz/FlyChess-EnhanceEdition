@@ -144,7 +144,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1534500ab936acf468622473b040ef43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weightList: 3c0000001400000014000000
+  powfulProps:
+  - {fileID: 5040777581280651092, guid: 3dbcd034224c67945adf50bbe7fbb628, type: 3}
+  - {fileID: 2468898249935856194, guid: 2e1939eb5bfa41f45a2655852d0315c3, type: 3}
+  - {fileID: 7819884562266808826, guid: 556df424ddd57f14d8f6cb914acb9a2c, type: 3}
+  weightList: 1e000000280000001e000000
 --- !u!1001 &6079448552162268698
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,9 +10,11 @@ public class InitPropsCells : InitCells
 {
     public GameObject[] propsCells;     //道具格父物体，每种道具用单独一类父物体管理
     public string[] propTag;            //道具标签
+    public static Dictionary<string, GameObject> propSpriteDic;         //存储道具名字对应的图像
 
     void Awake()
     {
+        propSpriteDic = new Dictionary<string, GameObject>();
         InitCellProps();
     }
 
@@ -32,7 +34,10 @@ public class InitPropsCells : InitCells
 
                 Vector3 scaleFactor = (propCellTrsf.rotation.z != 0) ? 
                     new Vector3(0.55f, 0.5f, 0) : new Vector3(0.5f, 0.55f, 0);
-                InstantiateSprite(propCellTrsf.gameObject, sprites[i], scaleFactor);
+
+                GameObject propSprite = InstantiateSprite(propCellTrsf.gameObject, sprites[i], scaleFactor);
+                if (!propSpriteDic.ContainsKey(propSprite.tag))
+                    propSpriteDic.Add(propSprite.tag, propSprite);
             }
         }
     }

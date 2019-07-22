@@ -9,7 +9,7 @@ public class ReInitCellPoint : MonoBehaviour
 
     private void Awake()
     {
-        EventCell.RegisterEvent(ReInitCellPiont);
+        //EventCell.RegisterEvent(ReInitCellPiont);
     }
 
     public void ReInitCellPiont()
@@ -17,7 +17,7 @@ public class ReInitCellPoint : MonoBehaviour
         ReInitText.gameObject.SetActive(true);
         List<NormalCell> tempCellList = new List<NormalCell>(InitNormalCells.cells);
 
-        foreach (var item in InitNormalCells.pointSprites)
+        foreach (var item in InitNormalCells.pointSpritesDic)
         {
             //随机取格子
             int cell_index = Random.Range(0, tempCellList.Count);

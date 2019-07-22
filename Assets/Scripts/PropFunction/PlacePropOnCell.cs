@@ -15,17 +15,40 @@ public class PlacePropOnCell : MonoBehaviour
     //可用格子的容器
     private Dictionary<int, GameObject> targetCells;
     private Player player;
+    private int curRound;           //点击道具时的轮数
 
+    private void InitData()
+    {
+        curRound = GameManager.instant.round;
+        targetCells = new Dictionary<int, GameObject>();
+        orignColor = new Dictionary<int, Color>();
+        player = GameManager.instant.GetPlayer();
+    }
 
     //外部接口，供OnClick调用
     public void StartPlaceProp()
     {
-        targetCells = new Dictionary<int, GameObject>();
-        orignColor = new Dictionary<int, Color>();
-        player = GameManager.instant.GetPlayer();
-        //执行放置逻辑
-        if (player.props[gameObject.tag] >0)
+        InitData();
+        //在起点时不能使用，执行放置逻辑
+        if (player.curCellIndex != player.originIndex && player.props[gameObject.tag] > 0)
             StartCoroutine(PlaceProp());
+    }
+
+    //外部接口，供AI调用
+    public void StartPlaceProp(GameObject targetCell, GameObject prop)
+    {
+        InitData();
+        StartCoroutine(PlaceProp(targetCell, prop));
+    }
+
+    //放置道具方法,供AI调用
+    private IEnumerator PlaceProp(GameObject targetCell, GameObject prop)
+    {
+        GetAcibleCells();
+        GetCellOrginColor();
+        ChangeCellsColor();
+        yield return StartCoroutine(ClickCellToPlaceProp(targetCell, prop));
+        ResetCellsColor();
     }
 
     //放置道具方法
@@ -36,7 +59,6 @@ public class PlacePropOnCell : MonoBehaviour
         ChangeCellsColor();
         yield return StartCoroutine(ClickCellToPlaceProp());
         ResetCellsColor();
-
     }
 
     //获得maxAccebNum范围内的格子
@@ -48,22 +70,26 @@ public class PlacePropOnCell : MonoBehaviour
 
         //获取前maxAccebNum个格子
         int startIndex = Utility.GetVaildIndex(curCellIndex - maxAccebNum,length);
-        for (int i = 0; i < 3; i++)
+        GetAccessibleCells(startIndex);
+        //获取后maxAccebNum个格子
+        int endIndex = Utility.GetVaildIndex(curCellIndex + 1, length);
+        GetAccessibleCells(endIndex);
+    }
+
+    //获取前后maxAccebNum范围内格子
+    private void GetAccessibleCells(int startIndex)
+    {
+        Dictionary<int, GameObject> cells = GameManager.instant.cellDic;
+        int length = cells.Count;
+        int layerMask = (1 << 11) | (1 << 12);
+
+        for (int i = 0; i < maxAccebNum; i++)
         {
-            targetCells.Add(startIndex, cells[startIndex]);
+            //以格子子物体为圆心，检测格子上是否有玩家或者道具
+            if (!Utility.HasItemOnCell(startIndex, layerMask)) 
+                targetCells.Add(startIndex, cells[startIndex]);
             startIndex = Utility.GetVaildIndex(startIndex + 1, length);
         }
-
-        //获取后maxAccebNum个格子
-        int endIndex = Utility.GetVaildIndex(curCellIndex + maxAccebNum, length);
-        for (int i = 0; i < 3; i++)
-        {
-            targetCells.Add(endIndex, cells[endIndex]);
-            endIndex = Utility.GetVaildIndex(endIndex - 1, length);
-        }
-
-        //添加当前格子
-        //targetCells.Add(curCellIndex, cells[curCellIndex]);
     }
 
     //获取格子原本color值
@@ -96,16 +122,32 @@ public class PlacePropOnCell : MonoBehaviour
         }
     }
 
+    //生成道具
+    private void InstantiateProp(Cell cell, GameObject targetCell, GameObject prop)
+    {
+        //点击位置为三角格，生成位置需要调整
+        if (Utility.IsTypeOf<TriCell>(cell))
+            InitCells.InstantiateSprite(targetCell, new Vector3(-0.3f, -0.3f), prop, Vector3.one);
+        //非三角格
+        else
+        {
+            Vector3 scaleFactor = (targetCell.transform.rotation.z != 0) ?
+                new Vector3(0.55f, 0.5f, 0) : new Vector3(0.5f, 0.55f, 0);
+            InitCells.InstantiateSprite(targetCell, prop, scaleFactor);
+        }
+    }
+
+
     //点击检测，在玩家点击右键或者点击有效格子前一直执行
     private IEnumerator ClickCellToPlaceProp ()
     {
         while(true)
         {
-            //按下右键退出
-            if (Input.GetMouseButtonDown(1))
+            //按下右键或者开始行走，退出
+            if (Input.GetMouseButtonDown(1) )
                 yield break;
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) )
             {
                 //做射线检测，判断玩家是否点击格子
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -121,28 +163,26 @@ public class PlacePropOnCell : MonoBehaviour
                     //点击了有效范围内的格子，在格子上生成道具
                     if (targetCells.ContainsKey(cell.index))
                     {
-                        //点击位置为三角格，生成位置需要调整
-                        if (Utility.IsTypeOf<TriCell>(cell))
-                              InitCells.InstantiateSprite(hitedCell, new Vector3(-0.3f, -0.3f), propSprite, Vector3.one);
-                        //非三角格
-                        else
-                        {
-                            Vector3 scaleFactor = (hitedCell.transform.rotation.z != 0) ?
-                                new Vector3(0.55f, 0.5f, 0) : new Vector3(0.5f, 0.55f, 0);
-                            InitCells.InstantiateSprite(hitedCell, propSprite, scaleFactor);
-                        }
-
-                        //更新道具数量
-                        player.UpdatePropAmount(gameObject.tag, -1);
-
-                        player = GameManager.instant.GetPlayer();
-                        player.ChangeButtonState(false);
+                        InstantiateProp(cell, hitedCell, propSprite);
+                        player.UseProp(gameObject.tag);
                         yield break;
                     }
                 }
             }
             yield return null;
         }
+    }
+
+
+    //AI调用接口
+    private IEnumerator ClickCellToPlaceProp(GameObject targetCell, GameObject prop)
+    {
+        Cell cell = Utility.GetCellScriptByTag(targetCell);
+        InstantiateProp(cell, targetCell, prop);
+
+        yield return new WaitForSeconds(0.5f);
+        //更新道具数量
+        player.UseProp(gameObject.tag);
     }
 
 

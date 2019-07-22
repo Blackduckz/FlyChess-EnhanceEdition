@@ -14,21 +14,14 @@ public class ProtalFunc : WaitingProp
         
         //防止多次触发
         if(!player.stopMove)
-        {
-            ////如果放置地点即玩家所在，传送后再投骰子
-            //if (curCellIndex == player.curCellIndex)
-            //    StartCoroutine(WaitForPortal(true));
-            //else
-            //    StartCoroutine(WaitForPortal(false));
             StartCoroutine(WaitForPortal(false));
-        }
     }
 
     //等待传送完成后，销毁自身
     private IEnumerator WaitForPortal(bool needDice)
     {
         yield return StartCoroutine(player.Portal(needDice));
-        player.skipRound = true;
+        //player.skipRound = true;
         Destroy(gameObject);
     }
 }

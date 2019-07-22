@@ -67,7 +67,7 @@ public class Utility : MonoBehaviour
     }
 
     //根据权重获取随机值
-    public static T GetRandomPoint<T>(List<T> itemList,List<int> weightlist)
+    public static T GetRandomValue<T>(List<T> itemList,List<int> weightlist)
     {
         //计算权重总和
         int totalWeights = 0;
@@ -100,5 +100,71 @@ public class Utility : MonoBehaviour
         System.Security.Cryptography.RNGCryptoServiceProvider rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
         rng.GetBytes(bytes);
         return BitConverter.ToInt32(bytes, 0);
+    }
+
+    //从子物体中获取Script
+    public static T GetScriptInChild<T>(GameObject gameObject, string name)
+    {
+        Transform child = gameObject.GetComponent<Transform>().Find(name);
+        return child.GetComponent<T>();
+    }
+
+    //查找范围内是否含有（不含有）目标格子，有的话返回格子的Index，否则返回-1
+    public static int ThereIsTargetCell(int startIndex, int area, string cellName, int stride, bool filter)
+    {
+        Dictionary<int, GameObject> cells = GameManager.instant.cellDic;
+        int length = cells.Count;
+
+        if (!filter)
+        {
+            for (int i = 0; i < area; i++)
+            {
+                startIndex = GetVaildIndex(startIndex + stride, length);
+                if (cells[startIndex].tag == cellName)
+                    return startIndex;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < area; i++)
+            {
+                startIndex = GetVaildIndex(startIndex + stride, length);
+                if (cells[startIndex].tag != cellName)
+                    return startIndex;
+            }
+        }
+
+        return -1;
+    }
+
+    //返回符合条件的格子脚本List
+    public static List<T> GetTargetCells<T>(int startIndex, int area, int stride)
+        where T : Cell
+    {
+        Dictionary<int, GameObject> cells = GameManager.instant.cellDic;
+        int length = cells.Count;
+        List<T> targetCells = new List<T>();
+
+        for (int i = 0; i < area; i++)
+        {
+            startIndex = GetVaildIndex(startIndex + stride, length);
+            T cellScript = cells[startIndex].GetComponent<T>();
+            if (cellScript != null)
+                targetCells.Add(cellScript);
+        }
+        return targetCells;
+    }
+
+    //检测格子上是否有某类物体
+    public static bool HasItemOnCell(int startIndex, int layerMask)
+    {
+        GameObject cell = cells[startIndex];
+        Transform cellChild = cell.transform.GetChild(0);
+        Collider2D c2d = Physics2D.OverlapCircle(cellChild.position, 0.1f, layerMask);
+
+        if (c2d == null)
+            return false;
+
+        return true;
     }
 }
