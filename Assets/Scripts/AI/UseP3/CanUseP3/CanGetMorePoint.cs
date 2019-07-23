@@ -46,10 +46,9 @@ public class CanGetMorePoint : Conditional
         //存在足够收益的函数
         if (Evaluate())
         {
-            
             foreach (var item in morePointCells)
             {
-                int cellIndex = item.Key.index - startIndex;
+                int cellIndex = item.Key.index - (startIndex - startOffset);
                 if (cellIndex > 0)
                 {
                     p3.btnIndex = cellIndex;
@@ -60,7 +59,7 @@ public class CanGetMorePoint : Conditional
                 else
                 {
                     int goBackDis = player.extraPoint - manager.morePoint;
-                    p3.btnIndex = item.Key.index - goBackDis - startIndex;
+                    p3.btnIndex = item.Key.index - goBackDis - (startIndex - startOffset);
                     onCell.SetData(item.Key.index, startIndex - item.Key.index, 1, 0);
                 }
                 

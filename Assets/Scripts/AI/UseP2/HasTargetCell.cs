@@ -28,7 +28,7 @@ public class HasTargetCell : Conditional
         if (targetIndex != -1)
         {
             p2.placeIndex = targetIndex;
-            item.SetData(startIndex, 1, 1, 0);
+            item.SetData(targetIndex, 1, 1, 1);
             return TaskStatus.Success;
         }
         else

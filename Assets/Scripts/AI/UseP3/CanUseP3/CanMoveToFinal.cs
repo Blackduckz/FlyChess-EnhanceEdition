@@ -31,8 +31,8 @@ public class CanMoveToFinal : Conditional
     //或者离终点格只剩7步距离，此时优先走最大行动距离
     public override TaskStatus OnUpdate()
     {
-        if (player.distanceFromFinal <= maxMovement || 
-            maxMovement - player.distanceFromFinal <= 2)
+        if (player.distanceFromFinal <= maxMovement ||
+            player.distanceFromFinal - maxMovement <= 2)
         {
             p3.btnIndex = 6;
             onCell.SetData(startIndex, finalIndex - startIndex, 1, 0);

@@ -8,7 +8,7 @@ public class HasNoNegativeCell : Conditional
 {
     public GetSharedVariables gmTask;
     public UseP2 p2;
-    //public CanPlaceProp canPlace;
+    public ThereAreItemOnCell onCell;
     public int area;
     public int stride;
 
@@ -34,7 +34,7 @@ public class HasNoNegativeCell : Conditional
             if (normalCell == null || normalCell.extraPoint > 0)
             {
                 p2.placeIndex = startIndex;
-                //canPlace.SetData(1, startIndex, -1, 0);
+                onCell.SetData(startIndex, 1, -1, 0);
                 return TaskStatus.Success;
             }
             startIndex = Utility.GetVaildIndex(startIndex + stride, cellDic.Count);

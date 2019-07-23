@@ -34,7 +34,7 @@ public class HasNoPointCell : Conditional
         if (targetIndex == -1)
             return TaskStatus.Failure;
 
-        int cellIndex = targetIndex - startIndex;
+        int cellIndex = targetIndex - startIndex - startOffset;
         if (cellIndex > 0)
             p3.btnIndex = cellIndex;
 

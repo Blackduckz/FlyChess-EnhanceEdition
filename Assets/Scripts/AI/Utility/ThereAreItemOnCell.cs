@@ -15,24 +15,26 @@ public class ThereAreItemOnCell : Conditional
     private Player player;
     private int targetIndex;
     private int layerMask;
+    private int count;
 
     public override void OnAwake()
     {
         manager = gmTask.manager;
         player = manager.GetPlayer();
+        count = manager.cellDic.Count;
+        targetIndex = Utility.GetVaildIndex(player.curCellIndex + stride, count);
     }
 
     public override TaskStatus OnUpdate()
     {
-        int count = manager.cellDic.Count;
-        targetIndex = Utility.GetVaildIndex(targetIndex + offset, count);
+       
         getLayerMask();
 
         for (int i = 0; i < area; i++)
         {
             if (Utility.HasItemOnCell(targetIndex, layerMask))
                 return TaskStatus.Failure;
-            targetIndex = Utility.GetVaildIndex(targetIndex + stride, manager.cellDic.Count);
+            targetIndex = Utility.GetVaildIndex(targetIndex + stride, count);
         }
 
         return TaskStatus.Success;

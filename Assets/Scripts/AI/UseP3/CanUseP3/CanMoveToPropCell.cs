@@ -35,7 +35,7 @@ public class CanMoveToPropCell : Conditional
         if(targetIndex == -1)
             return TaskStatus.Failure;
 
-        int cellIndex = targetIndex - startIndex;
+        int cellIndex = targetIndex - (startIndex - startOffset);
         if (cellIndex > 0)
         {
             p3.btnIndex = cellIndex;
@@ -47,7 +47,7 @@ public class CanMoveToPropCell : Conditional
         else
         {
             int goBackDis = player.extraPoint - manager.morePoint;
-            p3.btnIndex = targetIndex - goBackDis - startIndex;
+            p3.btnIndex = targetIndex - goBackDis - (startIndex - startOffset);
             onCell.SetData(targetIndex, startIndex - targetIndex, 1, 0);
         }
         return TaskStatus.Success;
