@@ -26,15 +26,8 @@ public class IsGoBack : Conditional
         if (maxMovement > 0)
             return TaskStatus.Failure;
 
-        //如果只能倒退，考虑后3格的情况
-        getMax.startOffset = maxMovement;
-        getMax.maxMovement = 3;
-        getMax.stride = -1;
 
-        //如果只能倒退，求出最大倒退距离
-        //if (maxMovement <= 0)
-        //    maxMovement = Mathf.Abs(maxMovement - 6 ) - 1;
-        //List<NormalCell> normalCells = Utility.GetTargetCells<NormalCell>(player.curCellIndex, maxMovement, -1);
+        getMax.stride = -1;
         return TaskStatus.Success;
     }
 }

@@ -2,7 +2,7 @@
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
-[TaskCategory("UseProp/Utility")]
+[TaskCategory("CanUse/Utility")]
 public class RollTheDice : Action
 {
     public GetSharedVariables gmTask;

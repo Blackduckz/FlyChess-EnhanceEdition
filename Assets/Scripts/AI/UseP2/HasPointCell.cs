@@ -36,7 +36,7 @@ public class HasPointCell : Conditional
         {
             if (Compare(point, cell.extraPoint))
             {
-                onCell.SetData(cell.index, area, stride);
+                onCell.SetData(cell.index, area, stride, 0);
                 p2.placeIndex = cell.index;
                 return TaskStatus.Success;
             }
@@ -47,7 +47,7 @@ public class HasPointCell : Conditional
     //根据传入的过滤值比较额外点数要大于还是小于
     private bool Compare(int para1,int para2)
     {
-        if (para1 > 0)
+        if (para1 >= 0)
             return para2 > para1;
         else
             return para2 < para1;

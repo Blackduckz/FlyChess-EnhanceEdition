@@ -33,11 +33,13 @@ public class Player : MonoBehaviour,IComparable<Player>
     [HideInInspector] public Quaternion targetRotation;       //旋转角度
     [HideInInspector] public int extraPoint;                        //由棋盘格获得的额外点数
     [HideInInspector] public int distanceFromFinal;                   //离终点距离
+    [HideInInspector] public int maxPortalIndex;              //最大传送距离为从玩家终点开始的26格（半个地图）
 
     //道具词典，记录对应道具数量
     [HideInInspector] public Dictionary<string, int> props;
 
     private int finalIndex;     //终点ID
+   
     private int[] dirction;         //以顺时针方向定义的方向数组，顺时针旋转时索引+1，逆时针-1则为新方向值
     private float inverseMoveTime;          //moveTime的倒数，方便计算
     private float inverseRotateTime;
@@ -76,6 +78,9 @@ public class Player : MonoBehaviour,IComparable<Player>
         originMoveDir = moveDir;
         originPosition = transform.position;
         originRotation = transform.rotation;
+
+        //记录最大传送距离
+        maxPortalIndex = finalIndex + 26;
     }
 
 
@@ -84,9 +89,9 @@ public class Player : MonoBehaviour,IComparable<Player>
         props = new Dictionary<string, int>()
         {
             ["EffectPass"] = 10,
-            ["StopMove"] = 10,
+            ["StopMove"] = 0,
             ["CheatDice"] = 10,
-            ["Portal"] = 10,
+            ["Portal"] = 0,
             ["TurnAround"] = 10,
         };
         dirction = new int[4] { 1, 4, 2, 3 };
@@ -400,7 +405,16 @@ public class Player : MonoBehaviour,IComparable<Player>
         GameObject cell;
        while (true)
         {
-            //int random = 2;
+            //int random = 31;
+            //for (int i = 0; i < cells.Count; i++)
+            //{
+            //    Cell tri = cells[i].GetComponent<Cell>();
+            //    if (tri != null && tri.index == random)
+            //    {
+            //        random = i;
+            //        break;
+            //    }
+            //}
             int random = UnityEngine.Random.Range(0, cells.Count);
 
             cell = cells[random];

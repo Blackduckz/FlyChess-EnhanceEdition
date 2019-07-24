@@ -3,7 +3,7 @@ using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 using System.Collections.Generic;
 
-[TaskCategory("UseProp/Utility")]
+[TaskCategory("CanUse/Utility")]
 public class GetTargetPlayer : Conditional
 {
     public GetSharedVariables gmTask;
@@ -23,14 +23,15 @@ public class GetTargetPlayer : Conditional
         cells = manager.cellDic;
     }
 
-
+    //该玩家身上没有小于-1的点数，且离终点距离小于27，且领先当前玩家
     public override TaskStatus OnUpdate()
     {
-        startIndex = Utility.GetVaildIndex(startIndex + offset, cells.Count);
+        startIndex = Utility.GetVaildIndex(player.curCellIndex + offset, cells.Count);
         for (int i = 0; i < area; i++)
         {
-            Player player = GetPlayer(startIndex);
-            if (player != null && player.extraPoint > -1)
+            Player targetPlayer = GetPlayer(startIndex);
+            if (targetPlayer != null && targetPlayer.extraPoint > -1 && targetPlayer.distanceFromFinal < 27 &&
+                targetPlayer.distanceFromFinal < player.distanceFromFinal)
                 return TaskStatus.Success;
         }
         return TaskStatus.Failure;

@@ -16,6 +16,7 @@ public class ThereAreItemOnCell : Conditional
     public int[] layerMasks;
     public int area;
     public int stride;
+    public int startOffset;
 
     private GameManager manager;
     private Player player;
@@ -28,14 +29,12 @@ public class ThereAreItemOnCell : Conditional
         manager = gmTask.manager;
         player = manager.GetPlayer();
         count = manager.cellDic.Count;
-        targetIndex = Utility.GetVaildIndex(player.curCellIndex + stride, count);
     }
 
     public override TaskStatus OnUpdate()
     {
-       
+        targetIndex = Utility.GetVaildIndex(player.curCellIndex + startOffset, count);
         getLayerMask();
-
         for (int i = 0; i < area; i++)
         {
             if (Utility.HasItemOnCell(targetIndex, layerMask))
@@ -46,11 +45,12 @@ public class ThereAreItemOnCell : Conditional
         return TaskStatus.Success;
     }
 
-    public void SetData(int targetIndex, int area,int stride)
+    public void SetData(int targetIndex, int area, int stride,int startOffset)
     {
         this.targetIndex = targetIndex;
         this.area = area;
         this.stride = stride;
+        this.startOffset = startOffset;
     }
 
     private void getLayerMask()

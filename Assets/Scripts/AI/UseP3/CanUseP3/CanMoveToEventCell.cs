@@ -28,13 +28,13 @@ public class CanMoveToEventCell : Conditional
         if (!manager.HasPlayerCloseToFinal())
             return TaskStatus.Failure;
 
-        int startIndex = player.curCellIndex;
+        int startIndex = Utility.GetVaildIndex(player.curCellIndex + 1, manager.cellDic.Count);
         int targetIndex = Utility.ThereIsTargetCell(startIndex, maxMovement, "EventCell", 1, false);
         if (targetIndex == -1)
             return TaskStatus.Failure;
 
         p3.btnIndex = targetIndex - startIndex;
-        onCell.SetData(startIndex, p3.btnIndex, 1);
+        onCell.SetData(startIndex, p3.btnIndex, 1, 1);
         return TaskStatus.Success;
 
     }

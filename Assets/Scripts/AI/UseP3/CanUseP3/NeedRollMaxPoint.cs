@@ -14,6 +14,7 @@ public class NeedRollMaxPoint : Conditional
     private GameManager manager;
     private Player player;
     private int maxMovement;
+    private int startOffset;
 
     public override void OnAwake()
     {
@@ -31,7 +32,7 @@ public class NeedRollMaxPoint : Conditional
         if (cellDic[cellIndex].tag != "NormalCells")
         {
             p3.btnIndex = 6;
-            onCell.SetData(startIndex, maxMovement, 1);
+            onCell.SetData(startIndex, maxMovement, 1, 1);
             return TaskStatus.Success;
         }
         else

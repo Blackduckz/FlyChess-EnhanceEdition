@@ -30,37 +30,55 @@ public class CanGetMorePoint : Conditional
     //检查是否有能提供足够收益的点数格
     public override TaskStatus OnUpdate()
     {
+        int count = manager.cellDic.Count;
         maxMovement = getMax.maxMovement;
         stride = getMax.stride;
         benefitFillter = getMax.benefitFillter;
         startOffset = getMax.startOffset;
 
         int startIndex =  Utility.GetVaildIndex(player.curCellIndex + startOffset, manager.cellDic.Count);
-        normalCells = new List<NormalCell>();
-        normalCells = Utility.GetTargetCells<NormalCell>(startIndex,maxMovement, stride);
+        if (maxMovement > 0)
+        {
+            if (player.extraPoint > 0)
+                normalCells = Utility.GetTargetCells<NormalCell>(startIndex, maxMovement - startOffset + 1, stride);
+            else
+                normalCells = Utility.GetTargetCells<NormalCell>(startIndex, maxMovement, stride); 
+        }
+
+        else if (maxMovement < 0)
+        {
+            int maxGoBackIndex = Utility.GetVaildIndex(startIndex - startOffset - getMax.maxGoBackDistance, count);
+            int goBackDistance = Utility.GetVaildIndex(startIndex - maxGoBackIndex + 1, count);
+            normalCells = Utility.GetTargetCells<NormalCell>(startIndex, goBackDistance, stride);
+        }
+        else
+            normalCells = Utility.GetTargetCells<NormalCell>(startIndex, getMax.maxGoBackDistance, stride);
 
         //没有符合条件的格子
         if (normalCells.Count == 0)
              return TaskStatus.Failure;
 
-        //存在足够收益的函数
+        //存在足够收益的格子
         if (Evaluate())
         {
             foreach (var item in morePointCells)
             {
-                int dianstance = item.Key.index - (startIndex - startOffset);
-                if (dianstance > 0)
+                int targetIndex = item.Key.index;
+
+                //目标格子在前方
+                if (maxMovement > 0)
                 {
+                    int dianstance = targetIndex - startIndex + 1;
                     p3.btnIndex = dianstance;
-                    onCell.SetData(startIndex, dianstance, 1);
+                    onCell.SetData(startIndex, dianstance, 1, 1);
                 }
                    
                 //只能倒退情况
                 else
                 {
                     int goBackDis = player.extraPoint - manager.morePoint;
-                    p3.btnIndex = item.Key.index - goBackDis - (startIndex - startOffset);
-                    onCell.SetData(item.Key.index, startIndex - item.Key.index, 1);
+                    p3.btnIndex = targetIndex - goBackDis - (startIndex - startOffset);
+                    onCell.SetData(targetIndex, startIndex - startOffset - targetIndex, 1, 0);
                 }
                 
                 return TaskStatus.Success;
