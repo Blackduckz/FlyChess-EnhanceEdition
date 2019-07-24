@@ -115,25 +115,12 @@ public class Utility : MonoBehaviour
         Dictionary<int, GameObject> cells = GameManager.instant.cellDic;
         int length = cells.Count;
 
-        if (!filter)
+        for (int i = 0; i < area; i++)
         {
-            for (int i = 0; i < area; i++)
-            {
-                startIndex = GetVaildIndex(startIndex + stride, length);
-                if (cells[startIndex].tag == cellName)
-                    return startIndex;
-            }
+            if (CompareString(filter, cells[startIndex].tag, cellName))
+                return startIndex;
+            startIndex = GetVaildIndex(startIndex + stride, length);
         }
-        else
-        {
-            for (int i = 0; i < area; i++)
-            {
-                startIndex = GetVaildIndex(startIndex + stride, length);
-                if (cells[startIndex].tag != cellName)
-                    return startIndex;
-            }
-        }
-
         return -1;
     }
 
@@ -147,10 +134,10 @@ public class Utility : MonoBehaviour
 
         for (int i = 0; i < area; i++)
         {
-            startIndex = GetVaildIndex(startIndex + stride, length);
             T cellScript = cells[startIndex].GetComponent<T>();
             if (cellScript != null)
                 targetCells.Add(cellScript);
+            startIndex = GetVaildIndex(startIndex + stride, length);
         }
         return targetCells;
     }
@@ -166,5 +153,14 @@ public class Utility : MonoBehaviour
             return false;
 
         return true;
+    }
+
+
+    private static bool CompareString(bool filter, string str1, string str2)
+    {
+        if (!filter)
+            return str1 == str2;
+        else
+            return str1 != str2;
     }
 }

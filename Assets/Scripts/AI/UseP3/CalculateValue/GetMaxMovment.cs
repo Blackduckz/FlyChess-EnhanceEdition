@@ -20,10 +20,12 @@ public class GetMaxMovment : Action
     {
         manager = gmTask.manager;
         player = manager.GetPlayer();
-        if (player.extraPoint >= 0)
+        if (player.extraPoint > 0)
             maxMovement = 6 + player.extraPoint + manager.morePoint;
-        else
+        else if (player.extraPoint < 0)
             maxMovement = 6 + player.extraPoint - manager.morePoint;
+        else
+            maxMovement = 6;
         benefitFillter = maxMovement;
 
     }

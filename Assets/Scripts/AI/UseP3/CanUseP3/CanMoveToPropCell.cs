@@ -39,7 +39,7 @@ public class CanMoveToPropCell : Conditional
         if (cellIndex > 0)
         {
             p3.btnIndex = cellIndex;
-            onCell.SetData(startIndex, cellIndex, 1, 0);
+            onCell.SetData(startIndex, cellIndex, 1);
         }
             
 
@@ -48,7 +48,7 @@ public class CanMoveToPropCell : Conditional
         {
             int goBackDis = player.extraPoint - manager.morePoint;
             p3.btnIndex = targetIndex - goBackDis - (startIndex - startOffset);
-            onCell.SetData(targetIndex, startIndex - targetIndex, 1, 0);
+            onCell.SetData(targetIndex, startIndex - targetIndex, 1);
         }
         return TaskStatus.Success;
     }

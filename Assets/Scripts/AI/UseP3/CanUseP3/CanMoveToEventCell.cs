@@ -34,7 +34,7 @@ public class CanMoveToEventCell : Conditional
             return TaskStatus.Failure;
 
         p3.btnIndex = targetIndex - startIndex;
-        onCell.SetData(startIndex, p3.btnIndex, 1, 0);
+        onCell.SetData(startIndex, p3.btnIndex, 1);
         return TaskStatus.Success;
 
     }

@@ -8,6 +8,7 @@ public class HasNoPointCell : Conditional
 {
     public GetMaxMovment getMax;
     public UseP3 p3;
+    public ThereAreItemOnCell onCell;
 
     private GameManager manager;
     private Player player;
@@ -34,15 +35,19 @@ public class HasNoPointCell : Conditional
         if (targetIndex == -1)
             return TaskStatus.Failure;
 
-        int cellIndex = targetIndex - startIndex - startOffset;
+        int cellIndex = targetIndex - (startIndex - startOffset);
         if (cellIndex > 0)
+        {
             p3.btnIndex = cellIndex;
+            onCell.SetData(cellIndex, 1, -1);
+        }
+            
 
         //只能倒退情况
         else
         {
             int goBackDis = player.extraPoint - manager.morePoint;
-            p3.btnIndex = targetIndex - goBackDis - startIndex;
+            p3.btnIndex = targetIndex - goBackDis - (startIndex - startOffset);
         }
         return TaskStatus.Success;
     }

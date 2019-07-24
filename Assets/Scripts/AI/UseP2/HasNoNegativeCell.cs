@@ -24,22 +24,24 @@ public class HasNoNegativeCell : Conditional
 
     public override TaskStatus OnUpdate()
     {
-        int startIndex = player.curCellIndex;
         Dictionary<int, GameObject> cellDic = manager.cellDic;
+        int startIndex = Utility.GetVaildIndex(player.curCellIndex + stride, cellDic.Count);
 
         //查找范围内中第一个非负数格
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < area; i++)
         {
             NormalCell normalCell = cellDic[startIndex].GetComponent<NormalCell>();
-            if (normalCell == null || normalCell.extraPoint > 0)
+            if (normalCell == null || normalCell.extraPoint > 0) 
             {
                 p2.placeIndex = startIndex;
-                onCell.SetData(startIndex, 1, -1, 0);
+                onCell.SetData(startIndex, 1, -1);
                 return TaskStatus.Success;
             }
             startIndex = Utility.GetVaildIndex(startIndex + stride, cellDic.Count);
         }
 
+        //无法放置，使检测脚本从自身开始，保证返回failure
+        onCell.area = 1;
         return TaskStatus.Failure;
     }
 }

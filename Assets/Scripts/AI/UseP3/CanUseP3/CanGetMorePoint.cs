@@ -41,18 +41,18 @@ public class CanGetMorePoint : Conditional
 
         //没有符合条件的格子
         if (normalCells.Count == 0)
-            return TaskStatus.Failure;
+             return TaskStatus.Failure;
 
         //存在足够收益的函数
         if (Evaluate())
         {
             foreach (var item in morePointCells)
             {
-                int cellIndex = item.Key.index - (startIndex - startOffset);
-                if (cellIndex > 0)
+                int dianstance = item.Key.index - (startIndex - startOffset);
+                if (dianstance > 0)
                 {
-                    p3.btnIndex = cellIndex;
-                    onCell.SetData(startIndex, cellIndex, 1, 0);
+                    p3.btnIndex = dianstance;
+                    onCell.SetData(startIndex, dianstance, 1);
                 }
                    
                 //只能倒退情况
@@ -60,7 +60,7 @@ public class CanGetMorePoint : Conditional
                 {
                     int goBackDis = player.extraPoint - manager.morePoint;
                     p3.btnIndex = item.Key.index - goBackDis - (startIndex - startOffset);
-                    onCell.SetData(item.Key.index, startIndex - item.Key.index, 1, 0);
+                    onCell.SetData(item.Key.index, startIndex - item.Key.index, 1);
                 }
                 
                 return TaskStatus.Success;
@@ -96,7 +96,7 @@ public class CanGetMorePoint : Conditional
         //如果有满足条件的正数格，按照收益排序
         if (morePointCells.Count > 0)
         {
-            morePointCells = morePointCells.OrderBy(p => p.Value).ToDictionary(p => p.Key, o => o.Value);
+            morePointCells = morePointCells.OrderByDescending(p => p.Value).ToDictionary(p => p.Key, o => o.Value);
             return true;
         }
 

@@ -2,6 +2,13 @@
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
+/// <summary>
+/// 用于企图移动到某个特定位置时检测该格子是否有玩家或者道具
+/// 要求前置条件调用SetData设置待检测格子信息
+/// 如果没有修改，根据手动设置值默认返回Success或Failure
+/// area =0 返回success; area =1 ,stride = 0 返回failure
+/// </summary>
+
 [TaskCategory("CanUse/Utility")]
 public class ThereAreItemOnCell : Conditional
 {
@@ -9,7 +16,6 @@ public class ThereAreItemOnCell : Conditional
     public int[] layerMasks;
     public int area;
     public int stride;
-    public int offset;
 
     private GameManager manager;
     private Player player;
@@ -40,12 +46,11 @@ public class ThereAreItemOnCell : Conditional
         return TaskStatus.Success;
     }
 
-    public void SetData(int targetIndex, int area,int stride, int offset)
+    public void SetData(int targetIndex, int area,int stride)
     {
         this.targetIndex = targetIndex;
         this.area = area;
         this.stride = stride;
-        this.offset = offset;
     }
 
     private void getLayerMask()

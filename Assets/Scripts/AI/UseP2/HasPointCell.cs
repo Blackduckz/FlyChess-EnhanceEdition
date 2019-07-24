@@ -27,7 +27,7 @@ public class HasPointCell : Conditional
     //寻找符合目标点数的格子
     public override TaskStatus OnUpdate()
     {
-        startIndex = player.curCellIndex;
+        startIndex = Utility.GetVaildIndex(player.curCellIndex + stride, manager.cellDic.Count);
         List<NormalCell> cells = Utility.GetTargetCells<NormalCell>(startIndex, area, stride);
         if (cells.Count == 0)
             return TaskStatus.Failure;
@@ -36,7 +36,7 @@ public class HasPointCell : Conditional
         {
             if (Compare(point, cell.extraPoint))
             {
-                onCell.SetData(cell.index, area, stride, 1);
+                onCell.SetData(cell.index, area, stride);
                 p2.placeIndex = cell.index;
                 return TaskStatus.Success;
             }
