@@ -643,7 +643,7 @@
     <Compile Include="Assets\Scripts\PropFunction\StopMoveFunc.cs" />
     <Compile Include="Assets\Scripts\PropFunction\TurnAroundFunc.cs" />
     <Compile Include="Assets\Scripts\PropFunction\WaitingProp.cs" />
-    <Compile Include="Assets\Scripts\StartSetting\SetAINumber.cs" />
+    <Compile Include="Assets\Scripts\StartSetting\QuitGame.cs" />
     <Compile Include="Assets\Scripts\StartSetting\SetVolume.cs" />
     <Compile Include="Assets\Scripts\StartSetting\StartGame.cs" />
     <Compile Include="Assets\Scripts\UI\CurRoundPlayer.cs" />
