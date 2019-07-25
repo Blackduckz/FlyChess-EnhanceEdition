@@ -10,10 +10,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instant { get; set; }         //单例
     public GameObject[] players;           //玩家引用
-    [HideInInspector]public Player[] playersScript;           //player脚本数组
+    public ExternalBehaviorTree tree;               //行为树
 
+    [HideInInspector]public Player[] playersScript;           //player脚本数组
     [HideInInspector] public Dictionary<int, GameObject> cellDic;           //存储所有格子的词典
-    [HideInInspector] List<Player> playerRank;                  //存储玩家排名的列表
+    [HideInInspector] public int aiNumber;            //AI数量
     [HideInInspector] public int playerTurn;        //玩家顺序
     [HideInInspector] public int morePoint;        //事件额外点数
     [HideInInspector] public int round;         //轮数（每投一次骰子为1轮，1回合4轮）
@@ -46,9 +47,10 @@ public class GameManager : MonoBehaviour
     private int dicePoint;        //骰子点数
     private Dictionary<int, Transform> playerTrsfs;         //所有玩家的Transfrom组件
     private Dictionary<int, Rigidbody2D> playerRd2ds;           //所以玩家的Rigidbody2D组件
+    private List<Player> playerRank;                  //存储玩家排名的列表
     private bool _GameOver;             //标识游戏结束
 
-    public int random;              //调试用值，用于控制骰子点数
+    //public int random;              //调试用值，用于控制骰子点数
 
 
     private void Awake()
@@ -107,8 +109,15 @@ public class GameManager : MonoBehaviour
             playersScript[i] = players[i].GetComponent<Player>();
 
         player = playersScript[0];
-        //player = players[playerTurn].GetComponent<Player>();
         CurRoundPlayer.UpdateText(player.playerText.text);
+
+        //添加AI行为树
+        for (int i = 4 - aiNumber; i <4; i++)
+        {
+            var bt = players[i].AddComponent<BehaviorTree>();
+            bt.ExternalBehavior = tree;
+            bt.StartWhenEnabled = false;
+        }
     }
 
 
@@ -136,7 +145,7 @@ public class GameManager : MonoBehaviour
     private int RollTheDice()
     {
         diceButton.interactable = false;
-        //int random = Random.Range(1, 6);
+        int random = Random.Range(1, 6);
         dicePointText.text = random.ToString();
         return random;
     }
@@ -195,9 +204,9 @@ public class GameManager : MonoBehaviour
         diceButton.interactable = true;
         extraPointText.ClearExtraPointText();
 
-        //behaviorTree = player.GetComponent<BehaviorTree>();
-        //if (behaviorTree != null)
-        //    behaviorTree.EnableBehavior();
+        behaviorTree = player.GetComponent<BehaviorTree>();
+        if (behaviorTree != null)
+            behaviorTree.EnableBehavior();
     }
 
     //获取事件的额外点数

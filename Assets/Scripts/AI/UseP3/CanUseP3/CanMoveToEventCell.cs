@@ -42,7 +42,7 @@ public class CanMoveToEventCell : Conditional
             return TaskStatus.Failure;
 
         p3.btnIndex = targetIndex - startIndex + 1;
-        startIndex = Utility.GetVaildIndex(startIndex + 1, count);
+        startIndex = Utility.GetVaildIndex(startIndex - 1, count);
         onCell.SetData(startIndex, p3.btnIndex, 1, 0);
         return TaskStatus.Success;
 

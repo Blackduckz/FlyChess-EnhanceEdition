@@ -70,7 +70,7 @@ public class CanGetMorePoint : Conditional
                 {
                     int dianstance = targetIndex - startIndex + 1;
                     p3.btnIndex = dianstance;
-                    startIndex = Utility.GetVaildIndex(startIndex + 1, count);
+                    startIndex = Utility.GetVaildIndex(startIndex - startOffset + 1, count);
                     onCell.SetData(startIndex, dianstance, 1, 0);
                 }
                    

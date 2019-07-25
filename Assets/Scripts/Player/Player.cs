@@ -89,11 +89,11 @@ public class Player : MonoBehaviour,IComparable<Player>
     {
         props = new Dictionary<string, int>()
         {
-            ["EffectPass"] = 10,
-            ["StopMove"] = 10,
-            ["CheatDice"] = 10,
-            ["Portal"] = 10,
-            ["TurnAround"] = 10,
+            ["EffectPass"] = 0,
+            ["StopMove"] = 0,
+            ["CheatDice"] = 0,
+            ["Portal"] = 0,
+            ["TurnAround"] = 0,
         };
         dirction = new int[4] { 1, 4, 2, 3 };
 
@@ -407,17 +407,17 @@ public class Player : MonoBehaviour,IComparable<Player>
         GameObject cell;
        while (true)
         {
-            int random = 24;
-            for (int i = 0; i < cells.Count; i++)
-            {
-                TriCell tri = cells[i].GetComponent<TriCell>();
-                if (tri != null && tri.index == random)
-                {
-                    random = i;
-                    break;
-                }
-            }
-            //int random = UnityEngine.Random.Range(0, cells.Count);
+            //int random = 24;
+            //for (int i = 0; i < cells.Count; i++)
+            //{
+            //    TriCell tri = cells[i].GetComponent<TriCell>();
+            //    if (tri != null && tri.index == random)
+            //    {
+            //        random = i;
+            //        break;
+            //    }
+            //}
+            int random = UnityEngine.Random.Range(0, cells.Count);
 
             cell = cells[random];
             FinalCell finalCell = cells[random].GetComponent<FinalCell>();
