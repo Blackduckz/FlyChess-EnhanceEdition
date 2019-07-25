@@ -13,12 +13,14 @@ public class CanMoveToEventCell : Conditional
     private GameManager manager;
     private Player player;
     private int maxMovement;
+    private int offset;
 
     public override void OnAwake()
     {
         manager = getMax.manager;
         player = manager.GetPlayer();
         maxMovement = getMax.maxMovement;
+        offset = getMax.startOffset;
     }
 
     //检查是否需要移动到事件格
@@ -28,13 +30,20 @@ public class CanMoveToEventCell : Conditional
         if (!manager.HasPlayerCloseToFinal())
             return TaskStatus.Failure;
 
-        int startIndex = Utility.GetVaildIndex(player.curCellIndex + 1, manager.cellDic.Count);
-        int targetIndex = Utility.ThereIsTargetCell(startIndex, maxMovement, "EventCell", 1, false);
+        int count = manager.cellDic.Count;
+        int startIndex = Utility.GetVaildIndex(player.curCellIndex + offset, count);
+        int targetIndex;
+        if (player.extraPoint > 0) 
+            targetIndex = Utility.ThereIsTargetCell(startIndex, maxMovement - offset, "EventCell", 1, false);
+        else
+            targetIndex = Utility.ThereIsTargetCell(startIndex, maxMovement, "EventCell", 1, false);
+
         if (targetIndex == -1)
             return TaskStatus.Failure;
 
-        p3.btnIndex = targetIndex - startIndex;
-        onCell.SetData(startIndex, p3.btnIndex, 1, 1);
+        p3.btnIndex = targetIndex - startIndex + 1;
+        startIndex = Utility.GetVaildIndex(startIndex + 1, count);
+        onCell.SetData(startIndex, p3.btnIndex, 1, 0);
         return TaskStatus.Success;
 
     }

@@ -48,7 +48,8 @@ public class CanMoveToPropCell : Conditional
                 return TaskStatus.Failure;
 
             p3.btnIndex = distanceFromTarget;
-            onCell.SetData(startIndex - startOffset, distanceFromTarget, 1, 1);
+            startIndex = Utility.GetVaildIndex(startIndex - startOffset + 1, count);
+            onCell.SetData(startIndex, distanceFromTarget, 1, 0);
         }
         //如果只能倒退，且倒退距离不为0，考虑倒退的最近格到最远格之间是否有符合条件的格子
         else

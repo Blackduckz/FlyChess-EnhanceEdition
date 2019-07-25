@@ -35,7 +35,8 @@ public class CanMoveToFinal : Conditional
             player.distanceFromFinal - maxMovement <= 2)
         {
             p3.btnIndex = 6;
-            onCell.SetData(startIndex, finalIndex - startIndex, 1, 1);
+            startIndex = Utility.GetVaildIndex(startIndex + 1, manager.cellDic.Count);
+            onCell.SetData(startIndex, finalIndex - startIndex, 1, 0);
             return TaskStatus.Success;
         }
         return TaskStatus.Failure;

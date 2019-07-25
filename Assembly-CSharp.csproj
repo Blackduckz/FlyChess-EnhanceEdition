@@ -596,13 +596,13 @@
     <Compile Include="Assets\Scripts\AI\UseP2\UseP2.cs" />
     <Compile Include="Assets\Scripts\AI\UseP3\CalculateValue\GetMaxMovment.cs" />
     <Compile Include="Assets\Scripts\AI\UseP3\CalculateValue\HasNoPointCell.cs" />
+    <Compile Include="Assets\Scripts\AI\UseP3\CalculateValue\IsGoBack.cs" />
     <Compile Include="Assets\Scripts\AI\UseP3\CanUseP3\CanGetMorePoint.cs" />
     <Compile Include="Assets\Scripts\AI\UseP3\CanUseP3\CanMoveToEventCell.cs" />
     <Compile Include="Assets\Scripts\AI\UseP3\CanUseP3\CanMoveToFinal.cs" />
     <Compile Include="Assets\Scripts\AI\UseP3\CanUseP3\CanMoveToPropCell.cs" />
     <Compile Include="Assets\Scripts\AI\UseP3\CanUseP3\HasP3.cs" />
     <Compile Include="Assets\Scripts\AI\UseP3\CanUseP3\NeedRollMaxPoint.cs" />
-    <Compile Include="Assets\Scripts\AI\UseP3\IsGoBack\IsGoBack.cs" />
     <Compile Include="Assets\Scripts\AI\UseP3\UseP3.cs" />
     <Compile Include="Assets\Scripts\AI\UseP4\FindMaxPointOrProp.cs" />
     <Compile Include="Assets\Scripts\AI\UseP4\OutOfPortalArea.cs" />

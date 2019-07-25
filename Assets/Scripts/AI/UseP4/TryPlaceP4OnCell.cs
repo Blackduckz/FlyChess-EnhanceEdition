@@ -22,7 +22,7 @@ public class TryPlaceP4OnCell : Action
     public override TaskStatus OnUpdate()
     {
         int targetIndex = player.curCellIndex + stride;
-        onCell.SetData(targetIndex, 1, stride,0);
+        onCell.SetData(targetIndex, 1, stride, 0);
         useProp.placeIndex = targetIndex;
         return TaskStatus.Success;
     }

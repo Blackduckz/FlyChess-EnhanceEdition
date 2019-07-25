@@ -14,7 +14,6 @@ public class NeedRollMaxPoint : Conditional
     private GameManager manager;
     private Player player;
     private int maxMovement;
-    private int startOffset;
 
     public override void OnAwake()
     {
@@ -27,12 +26,13 @@ public class NeedRollMaxPoint : Conditional
         maxMovement = getMax.maxMovement;
         int startIndex = player.curCellIndex;
         Dictionary<int, GameObject> cellDic = manager.cellDic;
-        int cellIndex = Utility.GetVaildIndex(startIndex + maxMovement, cellDic.Count);
+        int cellIndex = Utility.GetVaildIndex(startIndex + maxMovement , cellDic.Count);
 
         if (cellDic[cellIndex].tag != "NormalCells")
         {
             p3.btnIndex = 6;
-            onCell.SetData(startIndex, maxMovement, 1, 1);
+            startIndex = Utility.GetVaildIndex(startIndex + 1, cellDic.Count);
+            onCell.SetData(startIndex, maxMovement, 1, 0);
             return TaskStatus.Success;
         }
         else

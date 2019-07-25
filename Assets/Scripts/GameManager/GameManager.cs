@@ -176,6 +176,11 @@ public class GameManager : MonoBehaviour
         Player firstPlayer = GetFirstPlayer();
         firstPlayerText.UpdateFirstPlayerText(firstPlayer.playerText.text);
 
+        BehaviorTree behaviorTree;
+        behaviorTree = player.GetComponent<BehaviorTree>();
+        if (behaviorTree != null)
+            behaviorTree.DisableBehavior();
+
         //清空当前玩家身上可清除的状态位
         player.ResetFlag();
         player.ChangeAllButtonState(false);
@@ -190,9 +195,9 @@ public class GameManager : MonoBehaviour
         diceButton.interactable = true;
         extraPointText.ClearExtraPointText();
 
-        BehaviorTree behaviorTree = player.GetComponent<BehaviorTree>();
-        if (behaviorTree != null)
-            behaviorTree.EnableBehavior();
+        //behaviorTree = player.GetComponent<BehaviorTree>();
+        //if (behaviorTree != null)
+        //    behaviorTree.EnableBehavior();
     }
 
     //获取事件的额外点数
@@ -243,7 +248,13 @@ public class GameManager : MonoBehaviour
         rb2d = playerRd2ds[playerTurn];
         player_trf = playerTrsfs[playerTurn];
 
-        int move = CalculateMove(random);
+        //如果玩家发生了传送，传送之后继续移动时不需要重新计算移动步数
+        int move;
+        if (!player.isPortal)
+            move = CalculateMove(random);
+        else
+            move = random;
+
         player.isMove = true;
         //每次移动一格
         for (int i = 0; i < move; i++)

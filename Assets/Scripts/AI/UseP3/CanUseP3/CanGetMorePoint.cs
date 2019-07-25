@@ -36,7 +36,7 @@ public class CanGetMorePoint : Conditional
         benefitFillter = getMax.benefitFillter;
         startOffset = getMax.startOffset;
 
-        int startIndex =  Utility.GetVaildIndex(player.curCellIndex + startOffset, manager.cellDic.Count);
+        int startIndex =  Utility.GetVaildIndex(player.curCellIndex + startOffset, count);
         if (maxMovement > 0)
         {
             if (player.extraPoint > 0)
@@ -70,7 +70,8 @@ public class CanGetMorePoint : Conditional
                 {
                     int dianstance = targetIndex - startIndex + 1;
                     p3.btnIndex = dianstance;
-                    onCell.SetData(startIndex, dianstance, 1, 1);
+                    startIndex = Utility.GetVaildIndex(startIndex + 1, count);
+                    onCell.SetData(startIndex, dianstance, 1, 0);
                 }
                    
                 //只能倒退情况

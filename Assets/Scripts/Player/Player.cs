@@ -29,6 +29,7 @@ public class Player : MonoBehaviour,IComparable<Player>
     [HideInInspector] public bool contiueMove;            //标识是否需要继续移动
     [HideInInspector] public bool backToFinal ;            //标识是否倒退到终点
     [HideInInspector] public bool passFinal;          //标识是否反向越过终点
+    [HideInInspector] public bool isPortal;             //标识是否传送，如果是，传送之后继续移动时不需要重新计算移动步数
 
     [HideInInspector] public Quaternion targetRotation;       //旋转角度
     [HideInInspector] public int extraPoint;                        //由棋盘格获得的额外点数
@@ -89,9 +90,9 @@ public class Player : MonoBehaviour,IComparable<Player>
         props = new Dictionary<string, int>()
         {
             ["EffectPass"] = 10,
-            ["StopMove"] = 0,
+            ["StopMove"] = 10,
             ["CheatDice"] = 10,
-            ["Portal"] = 0,
+            ["Portal"] = 10,
             ["TurnAround"] = 10,
         };
         dirction = new int[4] { 1, 4, 2, 3 };
@@ -107,6 +108,7 @@ public class Player : MonoBehaviour,IComparable<Player>
         contiueMove = false;            
         backToFinal = false;            
         passFinal = false;
+        isPortal = false;
 
         //curCellIndex = 0;
         extraPoint = 0;
@@ -405,17 +407,17 @@ public class Player : MonoBehaviour,IComparable<Player>
         GameObject cell;
        while (true)
         {
-            //int random = 31;
-            //for (int i = 0; i < cells.Count; i++)
-            //{
-            //    Cell tri = cells[i].GetComponent<Cell>();
-            //    if (tri != null && tri.index == random)
-            //    {
-            //        random = i;
-            //        break;
-            //    }
-            //}
-            int random = UnityEngine.Random.Range(0, cells.Count);
+            int random = 24;
+            for (int i = 0; i < cells.Count; i++)
+            {
+                TriCell tri = cells[i].GetComponent<TriCell>();
+                if (tri != null && tri.index == random)
+                {
+                    random = i;
+                    break;
+                }
+            }
+            //int random = UnityEngine.Random.Range(0, cells.Count);
 
             cell = cells[random];
             FinalCell finalCell = cells[random].GetComponent<FinalCell>();
@@ -454,7 +456,11 @@ public class Player : MonoBehaviour,IComparable<Player>
 
         //传送后不需要再投骰子
         if(!needDice)
+        {
+            isPortal = true;
             GameManager.instant.StartGameLoop(resetMove);
+        }
+            
     }
 
     //传送后改变朝向
@@ -592,6 +598,7 @@ public class Player : MonoBehaviour,IComparable<Player>
         skipMove = false;
         isReverse = false;
         stopMove = false;
+        isPortal = false;
     }
 
     //排序接口，以distanceFromFinal为标准

@@ -29,11 +29,12 @@ public class ThereAreItemOnCell : Conditional
         manager = gmTask.manager;
         player = manager.GetPlayer();
         count = manager.cellDic.Count;
+        targetIndex = Utility.GetVaildIndex(player.curCellIndex + startOffset, count);
     }
 
     public override TaskStatus OnUpdate()
     {
-        targetIndex = Utility.GetVaildIndex(player.curCellIndex + startOffset, count);
+        //targetIndex = Utility.GetVaildIndex(targetIndex + startOffset, count);
         getLayerMask();
         for (int i = 0; i < area; i++)
         {
