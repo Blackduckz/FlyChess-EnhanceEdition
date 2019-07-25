@@ -27,7 +27,7 @@ public class ThereAreItemOnCell : Conditional
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
+        player = gmTask.player;
         count = manager.cellDic.Count;
         targetIndex = Utility.GetVaildIndex(player.curCellIndex + startOffset, count);
     }

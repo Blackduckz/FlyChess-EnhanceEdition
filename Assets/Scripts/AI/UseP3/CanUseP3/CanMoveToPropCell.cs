@@ -19,7 +19,7 @@ public class CanMoveToPropCell : Conditional
     public override void OnAwake()
     {
         manager = getMax.manager;
-        player = manager.GetPlayer();
+        player = getMax.player;
     }
 
 

@@ -17,7 +17,7 @@ public class FindMaxPointOrProp : Conditional
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
+        player = gmTask.player;
     }
 
     //查找身后三格内的最大点数格(至少大于+2)，如果没有，则查找是否有非道具格

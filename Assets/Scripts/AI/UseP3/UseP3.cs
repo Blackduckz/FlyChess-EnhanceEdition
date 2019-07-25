@@ -15,7 +15,7 @@ public class UseP3 : Action
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
+        player = gmTask.player;
     }
 
     public override TaskStatus OnUpdate()

@@ -24,7 +24,7 @@ public class CanGetMorePoint : Conditional
     public override void OnAwake()
     {
         manager = getMax.manager;
-        player = manager.GetPlayer();
+        player = getMax.player;
     }
 
     //检查是否有能提供足够收益的点数格

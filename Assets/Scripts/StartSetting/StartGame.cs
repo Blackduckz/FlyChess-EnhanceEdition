@@ -14,7 +14,7 @@ public class StartGame : MonoBehaviour
     {
         //设置AI数量
         int aiNum = Convert.ToInt32(dropDown.options[dropDown.value].text);
-        GameManager.instant.aiNumber = 4 - aiNum;
+        GameManager.aiNumber = 4 - aiNum;
 
         //加载游戏场景
         SceneManager.LoadScene("GameScene");

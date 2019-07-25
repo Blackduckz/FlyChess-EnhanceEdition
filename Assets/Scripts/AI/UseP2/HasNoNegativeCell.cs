@@ -18,12 +18,13 @@ public class HasNoNegativeCell : Conditional
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
     }
 
 
     public override TaskStatus OnUpdate()
     {
+        player = gmTask.player;
+
         Dictionary<int, GameObject> cellDic = manager.cellDic;
         int startIndex = Utility.GetVaildIndex(player.curCellIndex + stride, cellDic.Count);
 

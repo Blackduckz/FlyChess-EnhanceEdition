@@ -13,7 +13,7 @@ public class CanUseP1 : Conditional
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
+        player = gmTask.player;
     }
 
     public override TaskStatus OnUpdate()

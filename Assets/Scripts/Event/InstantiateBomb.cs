@@ -19,7 +19,7 @@ public class InstantiateBomb : MonoBehaviour
         triggerBomb = false;
         randomPoint = new List<int> { 1, 2, 3, 4, 5, 6 };
         bombs = new List<GameObject>();
-        //EventCell.RegisterEvent(CrateBomb);
+        EventCell.RegisterEvent(CrateBomb);
     }
 
     //生成炸弹

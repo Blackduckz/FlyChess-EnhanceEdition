@@ -407,7 +407,7 @@ public class Player : MonoBehaviour,IComparable<Player>
         GameObject cell;
        while (true)
         {
-            //int random = 24;
+            //int random = 4;
             //for (int i = 0; i < cells.Count; i++)
             //{
             //    TriCell tri = cells[i].GetComponent<TriCell>();

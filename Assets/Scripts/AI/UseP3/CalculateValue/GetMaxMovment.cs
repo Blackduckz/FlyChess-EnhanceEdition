@@ -15,13 +15,13 @@ public class GetMaxMovment : Action
     [HideInInspector] public int maxGoBackDistance;
 
 
-    private Player player;
+    [HideInInspector]public Player player;
 
     //根据最大移动距离，计算从哪个格子开始检查（即距离当前格子的偏移量）
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
+        player = gmTask.player;
         if (player.extraPoint > 0)
         {
             maxMovement = 6 + player.extraPoint + manager.morePoint;

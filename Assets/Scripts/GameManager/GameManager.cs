@@ -11,10 +11,10 @@ public class GameManager : MonoBehaviour
     public static GameManager instant { get; set; }         //单例
     public GameObject[] players;           //玩家引用
     public ExternalBehaviorTree tree;               //行为树
+     public static int aiNumber = 0;            //AI数量
 
     [HideInInspector]public Player[] playersScript;           //player脚本数组
     [HideInInspector] public Dictionary<int, GameObject> cellDic;           //存储所有格子的词典
-    [HideInInspector] public int aiNumber;            //AI数量
     [HideInInspector] public int playerTurn;        //玩家顺序
     [HideInInspector] public int morePoint;        //事件额外点数
     [HideInInspector] public int round;         //轮数（每投一次骰子为1轮，1回合4轮）
@@ -75,6 +75,16 @@ public class GameManager : MonoBehaviour
             playerTrsfs.Add(playerScript.turn - 1, player.transform);
             playerRd2ds.Add(playerScript.turn - 1, player.GetComponent<Rigidbody2D>());
         }
+
+        //添加AI行为树
+        for (int i = 4 - aiNumber; i < 4; i++)
+        {
+            var bt = players[i].AddComponent<BehaviorTree>();
+            GlobalVariables.Instance.SetVariableValue("PlayerTurn", i);
+            bt.ExternalBehavior = tree;
+            bt.StartWhenEnabled = false;
+            bt.enabled = false;
+        }
     }
 
     private void Update()
@@ -110,14 +120,6 @@ public class GameManager : MonoBehaviour
 
         player = playersScript[0];
         CurRoundPlayer.UpdateText(player.playerText.text);
-
-        //添加AI行为树
-        for (int i = 4 - aiNumber; i <4; i++)
-        {
-            var bt = players[i].AddComponent<BehaviorTree>();
-            bt.ExternalBehavior = tree;
-            bt.StartWhenEnabled = false;
-        }
     }
 
 
@@ -206,7 +208,11 @@ public class GameManager : MonoBehaviour
 
         behaviorTree = player.GetComponent<BehaviorTree>();
         if (behaviorTree != null)
+        {
+            GlobalVariables.Instance.SetVariableValue("PlayerTurn", playerTurn);
+            behaviorTree.enabled = true;
             behaviorTree.EnableBehavior();
+        }
     }
 
     //获取事件的额外点数
@@ -336,6 +342,14 @@ public class GameManager : MonoBehaviour
     {
         //Player player = players[(playerTurn + offset) % 4].GetComponent<Player>();
         Player player = playersScript[(playerTurn + offset) % 4];
+        return player;
+    }
+
+    //返回以当前玩家为起始的Player，参数为偏移量
+    public Player GetSpecifiedPlayer(int turn)
+    {
+        //Player player = players[(playerTurn + offset) % 4].GetComponent<Player>();
+        Player player = playersScript[turn];
         return player;
     }
 

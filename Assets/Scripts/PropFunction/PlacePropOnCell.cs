@@ -180,7 +180,7 @@ public class PlacePropOnCell : MonoBehaviour
         Cell cell = Utility.GetCellScriptByTag(targetCell);
         InstantiateProp(cell, targetCell, prop);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         //更新道具数量
         player.UseProp(gameObject.tag);
     }

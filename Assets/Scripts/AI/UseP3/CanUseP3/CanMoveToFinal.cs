@@ -19,7 +19,7 @@ public class CanMoveToFinal : Conditional
     public override void OnAwake()
     {
         manager = getMax.manager;
-        player = manager.GetPlayer();
+        player = getMax.player;
         startIndex = player.curCellIndex;
         maxMovement = getMax.maxMovement;
 

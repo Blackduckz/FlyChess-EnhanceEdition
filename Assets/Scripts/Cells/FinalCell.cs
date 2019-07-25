@@ -16,9 +16,9 @@ public class FinalCell : Cell
         player = collision.gameObject.GetComponent<Player>();
         if (collision.gameObject == playerPlane)
         {
-            //如果倒退进入终点格，停止移动
+            //如果从起点方向倒退进入终点格，停止移动
             //修改playerScript.backToFinal = true 
-            if (player.isReverse)
+            if (player.isReverse && player.distanceFromFinal > 10)
             {
                 player.stopMove = true;
                 player.backToFinal = true;

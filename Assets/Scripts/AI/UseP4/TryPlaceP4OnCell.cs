@@ -16,7 +16,7 @@ public class TryPlaceP4OnCell : Action
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
+        player = gmTask.player;
     }
 
     public override TaskStatus OnUpdate()

@@ -19,7 +19,7 @@ public class HasNoPointCell : Conditional
     public override void OnAwake()
     {
         manager = getMax.manager;
-        player = manager.GetPlayer();
+        player = getMax.player;
     }
 
 

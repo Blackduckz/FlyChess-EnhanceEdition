@@ -13,7 +13,7 @@ public class OutOfPortalArea : Conditional
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
+        player = gmTask.player;
     }
 
     public override TaskStatus OnUpdate()

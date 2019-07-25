@@ -18,7 +18,7 @@ public class CanMoveToEventCell : Conditional
     public override void OnAwake()
     {
         manager = getMax.manager;
-        player = manager.GetPlayer();
+        player = getMax.player;
         maxMovement = getMax.maxMovement;
         offset = getMax.startOffset;
     }

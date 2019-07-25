@@ -5,16 +5,21 @@ using BehaviorDesigner.Runtime.Tasks;
 [TaskCategory("CanUse/Utility")]
 public class GetSharedVariables : Action
 {
-    public SharedGameObject gameManager;
+    private int playerTurn;
     [HideInInspector]public GameManager manager;
+    [HideInInspector] public Player player;
 
     public override void OnAwake()
     {
-        manager = ((GameObject)gameManager.GetValue()).GetComponent<GameManager>();
+        manager = GameManager.instant;
+        playerTurn = (int)GlobalVariables.Instance.GetVariable("PlayerTurn").GetValue();
+        player = manager.GetSpecifiedPlayer(playerTurn);
     }
 
     public override TaskStatus OnUpdate()
     {
+        
+    
         if (manager != null)
             return TaskStatus.Success;
         else

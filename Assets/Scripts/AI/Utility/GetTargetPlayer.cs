@@ -19,7 +19,7 @@ public class GetTargetPlayer : Conditional
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
+        player = gmTask.player;
         cells = manager.cellDic;
     }
 

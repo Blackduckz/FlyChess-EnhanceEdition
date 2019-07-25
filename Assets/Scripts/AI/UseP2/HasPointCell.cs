@@ -21,7 +21,7 @@ public class HasPointCell : Conditional
     public override void OnAwake()
     {
         manager = gmTask.manager;
-        player = manager.GetPlayer();
+        player = gmTask.player;
     }
 
     //寻找符合目标点数的格子
