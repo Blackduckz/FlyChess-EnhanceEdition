@@ -14,7 +14,7 @@ public class GetProps : MonoBehaviour
     void Awake()
     {
         players = new List<Player>();
-        EventCell.RegisterEvent(GetProp);
+        //EventCell.RegisterEvent(GetProp);
 
         GameObject[] players_obj = GameManager.instant.players;
         foreach (var item in players_obj)

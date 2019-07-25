@@ -16,7 +16,7 @@ public class MorePoint : MonoBehaviour
 
     void Awake()
     {
-        EventCell.RegisterEvent(GetMovePoint);
+        //EventCell.RegisterEvent(GetMovePoint);
     }
 
     private void UpdateMorePointText(int point)

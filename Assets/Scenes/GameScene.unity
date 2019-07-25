@@ -9445,7 +9445,7 @@ PrefabInstance:
     - target: {fileID: 1587273648255820051, guid: 7206c06139fdfb84c8f9ce504b186bbc,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 212.3
+      value: 172
       objectReference: {fileID: 0}
     - target: {fileID: 1587273648255820051, guid: 7206c06139fdfb84c8f9ce504b186bbc,
         type: 3}
@@ -9772,7 +9772,7 @@ PrefabInstance:
     - target: {fileID: 2399079779370139490, guid: 1989c3f1cef890741b1e965cca02b424,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 152.1
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 2399079779370139490, guid: 1989c3f1cef890741b1e965cca02b424,
         type: 3}
@@ -10306,7 +10306,7 @@ PrefabInstance:
     - target: {fileID: 5363123576091537113, guid: f5821f854c8dc5c408aaed9ebe467be4,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 96.79999
+      value: -67
       objectReference: {fileID: 0}
     - target: {fileID: 5363123576091537113, guid: f5821f854c8dc5c408aaed9ebe467be4,
         type: 3}
@@ -10362,6 +10362,51 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
+        type: 3}
+      propertyPath: players.Array.data[0]
+      value: 
+      objectReference: {fileID: 1365874447}
+    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
+        type: 3}
+      propertyPath: players.Array.data[1]
+      value: 
+      objectReference: {fileID: 955462902}
+    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
+        type: 3}
+      propertyPath: players.Array.data[2]
+      value: 
+      objectReference: {fileID: 1532064021}
+    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
+        type: 3}
+      propertyPath: players.Array.data[3]
+      value: 
+      objectReference: {fileID: 131121852}
+    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
+        type: 3}
+      propertyPath: diceButton
+      value: 
+      objectReference: {fileID: 1433649118}
+    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
+        type: 3}
+      propertyPath: extraPointText
+      value: 
+      objectReference: {fileID: 419424133}
+    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
+        type: 3}
+      propertyPath: CurRoundPlayer
+      value: 
+      objectReference: {fileID: 891363325}
+    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
+        type: 3}
+      propertyPath: firstPlayerText
+      value: 
+      objectReference: {fileID: 117587454}
+    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
+        type: 3}
+      propertyPath: winnerText
+      value: 
+      objectReference: {fileID: 954554829}
     - target: {fileID: 5412221778726812828, guid: 35351f164cd22e649a922fccf484ff26,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10417,51 +10462,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
-        type: 3}
-      propertyPath: players.Array.data[0]
-      value: 
-      objectReference: {fileID: 1365874447}
-    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
-        type: 3}
-      propertyPath: players.Array.data[1]
-      value: 
-      objectReference: {fileID: 955462902}
-    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
-        type: 3}
-      propertyPath: players.Array.data[2]
-      value: 
-      objectReference: {fileID: 1532064021}
-    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
-        type: 3}
-      propertyPath: players.Array.data[3]
-      value: 
-      objectReference: {fileID: 131121852}
-    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
-        type: 3}
-      propertyPath: diceButton
-      value: 
-      objectReference: {fileID: 1433649118}
-    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
-        type: 3}
-      propertyPath: extraPointText
-      value: 
-      objectReference: {fileID: 419424133}
-    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
-        type: 3}
-      propertyPath: CurRoundPlayer
-      value: 
-      objectReference: {fileID: 891363325}
-    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
-        type: 3}
-      propertyPath: firstPlayerText
-      value: 
-      objectReference: {fileID: 117587454}
-    - target: {fileID: 5412221778726812829, guid: 35351f164cd22e649a922fccf484ff26,
-        type: 3}
-      propertyPath: winnerText
-      value: 
-      objectReference: {fileID: 954554829}
     - target: {fileID: 5412221778037379794, guid: 35351f164cd22e649a922fccf484ff26,
         type: 3}
       propertyPath: ReInitText
@@ -10897,17 +10897,17 @@ PrefabInstance:
     - target: {fileID: 8035665569287292578, guid: 65568599fb7799a43a3b197a754da1ec,
         type: 3}
       propertyPath: highLightColor.r
-      value: 0.9339623
+      value: 0.8588236
       objectReference: {fileID: 0}
     - target: {fileID: 8035665569287292578, guid: 65568599fb7799a43a3b197a754da1ec,
         type: 3}
       propertyPath: highLightColor.g
-      value: 0.083704144
+      value: 0.7137255
       objectReference: {fileID: 0}
     - target: {fileID: 8035665569287292578, guid: 65568599fb7799a43a3b197a754da1ec,
         type: 3}
       propertyPath: highLightColor.b
-      value: 0.083704144
+      value: 0.03529412
       objectReference: {fileID: 0}
     - target: {fileID: 8035665569287292578, guid: 65568599fb7799a43a3b197a754da1ec,
         type: 3}

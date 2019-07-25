@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     private List<Player> playerRank;                  //存储玩家排名的列表
     private bool _GameOver;             //标识游戏结束
 
-    //public int random;              //调试用值，用于控制骰子点数
+    public int random;              //调试用值，用于控制骰子点数
 
 
     private void Awake()
@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
             GlobalVariables.Instance.SetVariableValue("PlayerTurn", i);
             bt.ExternalBehavior = tree;
             bt.StartWhenEnabled = false;
+            bt.ResetValuesOnRestart = true;
             bt.enabled = false;
         }
     }
@@ -147,7 +148,7 @@ public class GameManager : MonoBehaviour
     private int RollTheDice()
     {
         diceButton.interactable = false;
-        int random = Random.Range(1, 6);
+        //int random = Random.Range(1, 6);
         dicePointText.text = random.ToString();
         return random;
     }
@@ -188,9 +189,9 @@ public class GameManager : MonoBehaviour
         firstPlayerText.UpdateFirstPlayerText(firstPlayer.playerText.text);
 
         BehaviorTree behaviorTree;
-        behaviorTree = player.GetComponent<BehaviorTree>();
-        if (behaviorTree != null)
-            behaviorTree.DisableBehavior();
+        //behaviorTree = player.GetComponent<BehaviorTree>();
+        //if (behaviorTree != null)
+        //    behaviorTree.DisableBehavior();
 
         //清空当前玩家身上可清除的状态位
         player.ResetFlag();

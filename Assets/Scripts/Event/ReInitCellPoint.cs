@@ -9,7 +9,7 @@ public class ReInitCellPoint : MonoBehaviour
 
     private void Awake()
     {
-        EventCell.RegisterEvent(ReInitCellPiont);
+        //EventCell.RegisterEvent(ReInitCellPiont);
     }
 
     public void ReInitCellPiont()
