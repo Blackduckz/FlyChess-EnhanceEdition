@@ -143,7 +143,7 @@ fb8c12cb107ac6ddbe08da5ff82d3d11 Assembly-CSharp.dll:BehaviorDesigner.Runtime.Be
 f2aadf5843f7cd0056fa5971badbcc72 Assembly-CSharp.dll:.Player
 25f0b5b2527c96766a6a1278d9f90861 Assembly-CSharp.dll:.TriCell
 4fd8bf02e3089425d3502e26c44ba31a Unity.TextMeshPro.dll:TMPro.TextContainer
-3e152ca6d0c4414f1b571338bab36078 Assembly-CSharp.dll:.TurnAroundFunc
+25f82390e383fcde0a69e82469368d91 Assembly-CSharp.dll:.TurnAroundFunc
 e6ae40841db498b6e673877ac45ad208 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 71bb6a6b6c8f052f948db64c7dd3ca4f UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 1dcb82730d983b77cec736c6ef19f814 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -179,6 +179,7 @@ fb6a1ea36b4f6ef5948d283d93760765 UnityEngine.GoogleAudioSpatializer.dll:UnityEng
 5b0391b7e3d9ea9db6c0a8fbd0ca23f6 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 5b0391b7e3d9ea9db6c0a8fbd0ca23f6 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
 cbeba0be93684d3bcd4b72542d830f58 Assembly-CSharp.dll:.SetVolume
+71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.QuitGame
 a4f0a4f62100f1a4fb5cbe0e00dde83f Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp-firstpass.dll:.RotateSample
 71bb6a6b6c8f052f948db64c7dd3ca4f BehaviorDesignerRuntime.dll:.AOTLinker
@@ -201,4 +202,3 @@ c6666661329916e218bee7f5e79e60f5 Unity.TextMeshPro.dll:TMPro.TextMeshPro
 a31d463fab03096b7307758e042cb722 Assembly-CSharp.dll:.InitNormalCells
 5e05cd262eca7853a261cc05a144cd4c Assembly-CSharp.dll:.GameManager
 4215db646767ccec7be4c22c12c07e42 Assembly-CSharp.dll:.GetProps
-71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.QuitGame

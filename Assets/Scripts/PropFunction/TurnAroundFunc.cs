@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnAroundFunc : MonoBehaviour
 {
     public int duration;            //持续回合数
+    public Text turnAroundText;            //转向Text
     private int resumeRound;            //恢复朝向轮数
     private Player firstPlayer;
     private List<Player> playerRank;
@@ -29,6 +31,8 @@ public class TurnAroundFunc : MonoBehaviour
             //游戏开局时不能使用
             if (firstPlayer.turn == GameManager.instant.round + 1)
                 return;
+
+            turnAroundText.text = firstPlayer.playerText.text +"被转向！" ;
 
             //如果当前第一名已经被转向，不能再次将其转向
             if (firstPlayer.isTurnAround)
@@ -67,6 +71,7 @@ public class TurnAroundFunc : MonoBehaviour
     {
         if (GameManager.instant.round == resumeRound)
         {
+            turnAroundText.text = "";
             firstPlayer.isTurnAround = false;
             firstPlayer.ReverseDir(false);
             firstPlayer.ChangeOrientation(firstPlayer.moveDir);
