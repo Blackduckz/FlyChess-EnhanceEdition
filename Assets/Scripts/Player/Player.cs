@@ -93,7 +93,7 @@ public class Player : MonoBehaviour,IComparable<Player>
             ["StopMove"] = 0,
             ["CheatDice"] = 0,
             ["Portal"] = 0,
-            ["TurnAround"] = 0,
+            ["TurnAround"] = 10,
         };
         dirction = new int[4] { 1, 4, 2, 3 };
 
