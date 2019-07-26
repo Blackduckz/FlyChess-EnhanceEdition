@@ -61,7 +61,7 @@ public class InstantiateBomb : MonoBehaviour
         //到达失效轮数，销毁
         if (GameManager.instant.round == disactiveRound)
         {
-            Destroy(gameObject);
+            DestroyAllBomb();
             GameManager.instant.eventAfterDice -= TriggerBomb;
             return;
         }

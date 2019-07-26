@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     private List<Player> playerRank;                  //存储玩家排名的列表
     private bool _GameOver;             //标识游戏结束
 
-    public int random;              //调试用值，用于控制骰子点数
+    //public int random;              //调试用值，用于控制骰子点数
 
 
     private void Awake()
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
     private int RollTheDice()
     {
         diceButton.interactable = false;
-        //int random = Random.Range(1, 6);
+        int random = Random.Range(1, 6);
         dicePointText.text = random.ToString();
         return random;
     }
